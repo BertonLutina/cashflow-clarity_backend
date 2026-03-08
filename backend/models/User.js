@@ -12,6 +12,45 @@ const User = {
     return rows[0] || null;
   },
 
+  async getAll(pagination = {}) {
+    const page = Math.max(1, parseInt(pagination.page, 10) || 1);
+    const limit = Math.min(100, Math.max(1, parseInt(pagination.limit, 10) || 20));
+    const offset = (page - 1) * limit;
+
+    const [[{ total }]] = await db.query(
+      'SELECT COUNT(*) AS total FROM users'
+    );
+    const [rows] = await db.query(
+      'SELECT * FROM users ORDER BY full_name, email LIMIT ? OFFSET ?',
+      [limit, offset]
+    );
+    return { rows, total, page, limit };
+  },
+
+  async getUsersSearchByName(search, pagination = {}) {
+    if (!search || typeof search !== 'string') {
+      return { rows: [], total: 0, page: 1, limit: pagination.limit || 20 };
+    }
+    const pattern = `%${search.trim()}%`;
+    const page = Math.max(1, parseInt(pagination.page, 10) || 1);
+    const limit = Math.min(100, Math.max(1, parseInt(pagination.limit, 10) || 20));
+    const offset = (page - 1) * limit;
+
+    const [[{ total }]] = await db.query(
+      `SELECT COUNT(*) AS total FROM users
+       WHERE full_name LIKE ? OR first_name LIKE ? OR last_name LIKE ? OR company_name LIKE ? OR email LIKE ?`,
+      [pattern, pattern, pattern, pattern, pattern]
+    );
+    const [rows] = await db.query(
+      `SELECT * FROM users
+       WHERE full_name LIKE ? OR first_name LIKE ? OR last_name LIKE ? OR company_name LIKE ? OR email LIKE ?
+       ORDER BY full_name, email
+       LIMIT ? OFFSET ?`,
+      [pattern, pattern, pattern, pattern, pattern, limit, offset]
+    );
+    return { rows, total, page, limit };
+  },
+
   async create(data) {
     const { email, password, full_name = null } = data;
     const password_hash = await bcrypt.hash(password, 12);

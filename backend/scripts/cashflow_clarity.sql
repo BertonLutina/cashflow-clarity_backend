@@ -116,43 +116,6 @@ CREATE TABLE `expense_categories` (
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-
-DELIMITER $$
-
-CREATE TRIGGER after_user_insert
-AFTER INSERT ON users
-FOR EACH ROW
-BEGIN
-    INSERT INTO expense_categories 
-        (user_id, name, description, is_active, flow_type, type_name, created_at, updated_at)
-    VALUES
-        (NEW.id, 'Sales', NULL, 1, 'Cash In', 'Revenu (Hors Taxe)', NOW(), NOW()),
-        (NEW.id, 'Consulting', NULL, 1, 'Cash In', 'Revenu (Hors Taxe)', NOW(), NOW()),
-        (NEW.id, 'Revenu', NULL, 1, 'Cash In', 'Revenu (Hors Taxe)', NOW(), NOW()),
-        (NEW.id, 'Administration et bureau', NULL, 1, 'Cash Out', 'Dépenses', NOW(), NOW()),
-        (NEW.id, 'Charges (électricité, gaz, eau)', NULL, 1, 'Cash Out', 'Dépenses', NOW(), NOW()),
-        (NEW.id, 'Déplacements et frais', NULL, 1, 'Cash Out', 'Dépenses', NOW(), NOW()),
-        (NEW.id, 'Dons', NULL, 1, 'Cash Out', 'Dépenses', NOW(), NOW()),
-        (NEW.id, 'Formation et conférences', NULL, 1, 'Cash Out', 'Dépenses', NOW(), NOW()),
-        (NEW.id, 'IT', NULL, 1, 'Cash Out', 'Dépenses', NOW(), NOW()),
-        (NEW.id, 'Loyer', NULL, 1, 'Cash Out', 'Dépenses', NOW(), NOW()),
-        (NEW.id, 'Marketing', NULL, 1, 'Cash Out', 'Dépenses', NOW(), NOW()),
-        (NEW.id, 'Marchandises', NULL, 1, 'Cash Out', 'Dépenses', NOW(), NOW()),
-        (NEW.id, 'Consommables', NULL, 1, 'Cash Out', 'Dépenses', NOW(), NOW()),
-        (NEW.id, 'Mobilier et matériel', NULL, 1, 'Cash Out', 'Dépenses', NOW(), NOW()),
-        (NEW.id, 'Téléphone et Internet', NULL, 1, 'Cash Out', 'Dépenses', NOW(), NOW()),
-        (NEW.id, 'Autres dépenses', NULL, 1, 'Cash Out', 'Dépenses', NOW(), NOW()),
-        (NEW.id, 'Frais bancaires', NULL, 1, 'Cash Out', 'Frais bancaires', NOW(), NOW()),
-        (NEW.id, 'Cotisations sociales', NULL, 1, 'Cash Out', 'Cotisations sociales', NOW(), NOW()),
-        (NEW.id, 'Investissement', NULL, 1, 'Adjustment', 'Investissement', NOW(), NOW()),
-        (NEW.id, 'Cas de force majeure', NULL, 1, 'Adjustment', 'Cas de force majeure', NOW(), NOW()),
-        (NEW.id, 'Top up RUN', NULL, 1, 'Adjustment', 'Dépenses', NOW(), NOW()),
-        (NEW.id, 'Top up GROW', NULL, 1, 'Adjustment', 'Dépenses', NOW(), NOW()),
-        (NEW.id, 'Décompte TVA', NULL, 1, 'Adjustment', 'Dépenses', NOW(), NOW());
-END$$
-
-DELIMITER ;
-
 --
 -- Déclencheurs `expense_categories`
 --
@@ -285,16 +248,17 @@ INSERT INTO cashflow_entries (
 )
 SELECT
     NEW.user_id,
-    NEW.month,
+    MAX(month) AS month,
     NEW.month_number,
     NEW.year,
-    SUM(CASE WHEN NEW.flow_type = 'Cash In' THEN amount_incl_vat ELSE 0 END),
-    SUM(CASE WHEN NEW.flow_type = 'Cash Out' THEN amount_incl_vat ELSE 0 END)
+    SUM(CASE WHEN flow_type = 'Cash In' THEN amount_incl_vat ELSE 0 END),
+    SUM(CASE WHEN flow_type = 'Cash Out' THEN amount_incl_vat ELSE 0 END)
 FROM transactions
 WHERE
     user_id = NEW.user_id
     AND year = NEW.year
     AND month_number = NEW.month_number
+GROUP BY user_id, month_number, year
 
 ON DUPLICATE KEY UPDATE
     cash_in = VALUES(cash_in),
@@ -453,7 +417,44 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Déclencheurs `users`
+-- Déclencheurs `users` (default expense_categories for new users)
+--
+DELIMITER $$
+CREATE TRIGGER `after_user_insert`
+AFTER INSERT ON `users`
+FOR EACH ROW
+BEGIN
+    INSERT INTO `expense_categories`
+        (`user_id`, `name`, `description`, `is_active`, `flow_type`, `type_name`, `created_at`, `updated_at`)
+    VALUES
+        (NEW.id, 'Sales', NULL, 1, 'Cash In', 'Revenu (Hors Taxe)', NOW(), NOW()),
+        (NEW.id, 'Consulting', NULL, 1, 'Cash In', 'Revenu (Hors Taxe)', NOW(), NOW()),
+        (NEW.id, 'Revenu', NULL, 1, 'Cash In', 'Revenu (Hors Taxe)', NOW(), NOW()),
+        (NEW.id, 'Administration et bureau', NULL, 1, 'Cash Out', 'Dépenses', NOW(), NOW()),
+        (NEW.id, 'Charges (électricité, gaz, eau)', NULL, 1, 'Cash Out', 'Dépenses', NOW(), NOW()),
+        (NEW.id, 'Déplacements et frais', NULL, 1, 'Cash Out', 'Dépenses', NOW(), NOW()),
+        (NEW.id, 'Dons', NULL, 1, 'Cash Out', 'Dépenses', NOW(), NOW()),
+        (NEW.id, 'Formation et conférences', NULL, 1, 'Cash Out', 'Dépenses', NOW(), NOW()),
+        (NEW.id, 'IT', NULL, 1, 'Cash Out', 'Dépenses', NOW(), NOW()),
+        (NEW.id, 'Loyer', NULL, 1, 'Cash Out', 'Dépenses', NOW(), NOW()),
+        (NEW.id, 'Marketing', NULL, 1, 'Cash Out', 'Dépenses', NOW(), NOW()),
+        (NEW.id, 'Marchandises', NULL, 1, 'Cash Out', 'Dépenses', NOW(), NOW()),
+        (NEW.id, 'Consommables', NULL, 1, 'Cash Out', 'Dépenses', NOW(), NOW()),
+        (NEW.id, 'Mobilier et matériel', NULL, 1, 'Cash Out', 'Dépenses', NOW(), NOW()),
+        (NEW.id, 'Téléphone et Internet', NULL, 1, 'Cash Out', 'Dépenses', NOW(), NOW()),
+        (NEW.id, 'Autres dépenses', NULL, 1, 'Cash Out', 'Dépenses', NOW(), NOW()),
+        (NEW.id, 'Frais bancaires', NULL, 1, 'Cash Out', 'Frais bancaires', NOW(), NOW()),
+        (NEW.id, 'Cotisations sociales', NULL, 1, 'Cash Out', 'Cotisations sociales', NOW(), NOW()),
+        (NEW.id, 'Investissement', NULL, 1, 'Adjustment', 'Investissement', NOW(), NOW()),
+        (NEW.id, 'Cas de force majeure', NULL, 1, 'Adjustment', 'Cas de force majeure', NOW(), NOW()),
+        (NEW.id, 'Top up RUN', NULL, 1, 'Adjustment', 'Dépenses', NOW(), NOW()),
+        (NEW.id, 'Top up GROW', NULL, 1, 'Adjustment', 'Dépenses', NOW(), NOW()),
+        (NEW.id, 'Décompte TVA', NULL, 1, 'Adjustment', 'Dépenses', NOW(), NOW());
+END$$
+DELIMITER ;
+
+--
+-- Déclencheurs `users` (treasury_rules + treasury_settings)
 --
 DELIMITER $$
 CREATE TRIGGER `trg_after_user_insert` AFTER INSERT ON `users` FOR EACH ROW BEGIN
