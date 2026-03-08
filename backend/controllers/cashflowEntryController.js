@@ -1,4 +1,5 @@
 const CashflowEntry = require('../models/CashflowEntry');
+const { broadcastCrud } = require('../wsServer');
 
 exports.list = async (req, res) => {
   try {
@@ -15,6 +16,7 @@ exports.list = async (req, res) => {
 exports.create = async (req, res) => {
   try {
     const row = await CashflowEntry.upsert(req.userId, req.body);
+    broadcastCrud('cashflow-entries', 'create');
     res.status(201).json(row);
   } catch (err) {
     console.error(err);
@@ -26,6 +28,7 @@ exports.update = async (req, res) => {
   try {
     const row = await CashflowEntry.update(req.params.id, req.userId, req.body);
     if (!row) return res.status(404).json({ error: 'Entry not found' });
+    broadcastCrud('cashflow-entries', 'update');
     res.json(row);
   } catch (err) {
     console.error(err);
@@ -37,6 +40,7 @@ exports.delete = async (req, res) => {
   try {
     const ok = await CashflowEntry.delete(req.params.id, req.userId);
     if (!ok) return res.status(404).json({ error: 'Entry not found' });
+    broadcastCrud('cashflow-entries', 'delete');
     res.json({ message: 'Deleted' });
   } catch (err) {
     console.error(err);

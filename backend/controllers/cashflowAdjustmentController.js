@@ -1,4 +1,5 @@
 const CashflowAdjustment = require('../models/CashflowAdjustment');
+const { broadcastCrud } = require('../wsServer');
 
 exports.list = async (req, res) => {
   try {
@@ -15,6 +16,7 @@ exports.list = async (req, res) => {
 exports.create = async (req, res) => {
   try {
     const row = await CashflowAdjustment.create(req.userId, req.body);
+    broadcastCrud('cashflow-adjustments', 'create');
     res.status(201).json(row);
   } catch (err) {
     console.error(err);
@@ -26,6 +28,7 @@ exports.update = async (req, res) => {
   try {
     const row = await CashflowAdjustment.update(req.params.id, req.userId, req.body);
     if (!row) return res.status(404).json({ error: 'Adjustment not found' });
+    broadcastCrud('cashflow-adjustments', 'update');
     res.json(row);
   } catch (err) {
     console.error(err);
@@ -37,6 +40,7 @@ exports.delete = async (req, res) => {
   try {
     const ok = await CashflowAdjustment.delete(req.params.id, req.userId);
     if (!ok) return res.status(404).json({ error: 'Adjustment not found' });
+    broadcastCrud('cashflow-adjustments', 'delete');
     res.json({ message: 'Deleted' });
   } catch (err) {
     console.error(err);

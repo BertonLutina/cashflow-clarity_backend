@@ -1,4 +1,5 @@
 const ReviewedNotification = require('../models/ReviewedNotification');
+const { broadcastCrud } = require('../wsServer');
 
 exports.list = async (req, res) => {
   try {
@@ -15,6 +16,7 @@ exports.list = async (req, res) => {
 exports.create = async (req, res) => {
   try {
     const row = await ReviewedNotification.create(req.userId, req.body);
+    broadcastCrud('reviewed-notifications', 'create');
     res.status(201).json(row);
   } catch (err) {
     console.error(err);

@@ -1,5 +1,6 @@
 const Subscription = require('../models/Subscription');
 const User = require('../models/User');
+const { broadcastCrud } = require('../wsServer');
 
 /** GET /api/subscription - current user's subscription (single endpoint used by Layout/frontend) */
 exports.getCurrent = async (req, res) => {
@@ -55,6 +56,7 @@ exports.create = async (req, res) => {
       user_email: req.body.user_email || user.email,
     };
     const row = await Subscription.create(req.userId, data);
+    broadcastCrud('subscription', 'create');
     res.status(201).json(row);
   } catch (err) {
     console.error(err);
@@ -67,6 +69,7 @@ exports.update = async (req, res) => {
   try {
     const row = await Subscription.update(req.params.id, req.userId, req.body);
     if (!row) return res.status(404).json({ error: 'Subscription not found' });
+    broadcastCrud('subscription', 'update');
     res.json(row);
   } catch (err) {
     console.error(err);
@@ -79,6 +82,7 @@ exports.delete = async (req, res) => {
   try {
     const ok = await Subscription.delete(req.params.id, req.userId);
     if (!ok) return res.status(404).json({ error: 'Subscription not found' });
+    broadcastCrud('subscription', 'delete');
     res.json({ message: 'Deleted' });
   } catch (err) {
     console.error(err);

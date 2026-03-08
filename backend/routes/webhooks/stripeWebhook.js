@@ -4,6 +4,7 @@ const Stripe = require('stripe');
 // NOTE: Raw body must be parsed at app level before express.json() - see app.js
 const User = require('../../models/User');
 const Subscription = require('../../models/Subscription');
+const { broadcastCrud } = require('../../wsServer');
 
 const stripe = process.env.STRIPE_SECRET_KEY
   ? new Stripe(process.env.STRIPE_SECRET_KEY)
@@ -67,6 +68,7 @@ router.post('/', async (req, res) => {
         grace_period_end: gracePeriodEnd.toISOString(),
         external_id: subscriptionId,
       });
+      broadcastCrud('subscription', 'update');
       console.log(`Subscription created/updated for ${userEmail}, plan: ${plan}`);
     }
 
@@ -85,6 +87,7 @@ router.post('/', async (req, res) => {
         current_period_end: periodEnd,
         grace_period_end: gracePeriodEnd.toISOString(),
       });
+      broadcastCrud('subscription', 'update');
       console.log(`Subscription renewed for ${subscriptionId}`);
     }
 
@@ -95,6 +98,7 @@ router.post('/', async (req, res) => {
       await Subscription.updateByExternalId(subscriptionId, {
         status: 'cancelled',
       });
+      broadcastCrud('subscription', 'update');
       console.log(`Subscription cancelled for ${subscriptionId}`);
     }
 
@@ -110,6 +114,7 @@ router.post('/', async (req, res) => {
         current_period_end: periodEnd,
         grace_period_end: gracePeriodEnd.toISOString(),
       });
+      broadcastCrud('subscription', 'update');
     }
   } catch (err) {
     console.error('Webhook processing error:', err);

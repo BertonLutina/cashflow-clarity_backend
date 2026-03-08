@@ -1,4 +1,5 @@
 const Transaction = require('../models/Transaction');
+const { broadcastCrud } = require('../wsServer');
 
 exports.list = async (req, res) => {
   try {
@@ -31,6 +32,7 @@ exports.list = async (req, res) => {
 exports.create = async (req, res) => {
   try {
     const row = await Transaction.create(req.userId, req.body);
+    broadcastCrud('transactions', 'create');
     res.status(201).json(row);
   } catch (err) {
     console.error(err);
@@ -42,6 +44,7 @@ exports.update = async (req, res) => {
   try {
     const row = await Transaction.update(req.params.id, req.userId, req.body);
     if (!row) return res.status(404).json({ error: 'Transaction not found' });
+    broadcastCrud('transactions', 'update');
     res.json(row);
   } catch (err) {
     console.error(err);
@@ -53,6 +56,7 @@ exports.delete = async (req, res) => {
   try {
     const ok = await Transaction.delete(req.params.id, req.userId);
     if (!ok) return res.status(404).json({ error: 'Transaction not found' });
+    broadcastCrud('transactions', 'delete');
     res.json({ message: 'Deleted' });
   } catch (err) {
     console.error(err);
@@ -68,6 +72,7 @@ exports.bulkCreate = async (req, res) => {
       const row = await Transaction.create(req.userId, item);
       results.push(row);
     }
+    broadcastCrud('transactions', 'create');
     res.status(201).json(results);
   } catch (err) {
     console.error(err);

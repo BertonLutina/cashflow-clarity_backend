@@ -1,4 +1,5 @@
 const TreasuryRules = require('../models/TreasuryRules');
+const { broadcastCrud } = require('../wsServer');
 
 exports.list = async (req, res) => {
   try {
@@ -13,6 +14,7 @@ exports.list = async (req, res) => {
 exports.upsert = async (req, res) => {
   try {
     const row = await TreasuryRules.upsert(req.userId, req.body);
+    broadcastCrud('treasury-rules', 'update');
     res.status(201).json(row);
   } catch (err) {
     console.error(err);
@@ -27,6 +29,7 @@ exports.update = async (req, res) => {
       return res.status(404).json({ error: 'Treasury rules not found' });
     }
     const row = await TreasuryRules.update(req.params.id, req.userId, req.body);
+    broadcastCrud('treasury-rules', 'update');
     res.json(row);
   } catch (err) {
     console.error(err);
