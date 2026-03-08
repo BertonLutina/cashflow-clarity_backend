@@ -39,12 +39,6 @@ CREATE TABLE `cashflow_adjustments` (
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Déchargement des données de la table `cashflow_adjustments`
---
-
-INSERT INTO `cashflow_adjustments` (`id`, `user_id`, `month`, `month_number`, `year`, `adjustment_amount`, `notes`, `created_at`, `updated_at`) VALUES
-(1, 2, 'January', 1, 2026, 500.00, NULL, '2026-02-22 10:20:04', '2026-02-22 10:20:04');
 
 --
 -- Déclencheurs `cashflow_adjustments`
@@ -76,27 +70,6 @@ CREATE TABLE `cashflow_entries` (
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Déchargement des données de la table `cashflow_entries`
---
-
-INSERT INTO `cashflow_entries` (`id`, `user_id`, `month`, `month_number`, `year`, `cash_in`, `cash_out`, `expense_categories`, `notes`, `created_at`, `updated_at`) VALUES
-(1, 2, 'January', 1, 2026, 1210.00, 242.00, '[]', NULL, '2026-02-22 10:20:04', '2026-02-22 10:20:04'),
-(2, 1, 'January', 1, 2026, 4000.00, 5999.00, '[]', '', '2026-02-22 10:35:48', '2026-03-06 21:51:20'),
-(3, 1, 'February', 2, 2026, 8470.00, 0.00, '[]', '', '2026-03-01 19:26:24', '2026-03-06 21:51:20'),
-(4, 4, 'February', 2, 2025, 1210.00, 200.00, '[]', '', '2026-03-01 21:34:52', '2026-03-06 21:51:20'),
-(5, 1, 'January', 1, 2025, 1000.00, 1223.00, '[]', '', '2026-03-05 15:26:34', '2026-03-06 21:51:20'),
-(6, 1, 'March', 3, 2025, 4356.00, 5234.61, '[]', '', '2026-03-05 15:26:34', '2026-03-06 21:51:20'),
-(7, 1, 'April', 4, 2025, 0.00, 1545.00, '[]', '', '2026-03-05 15:26:34', '2026-03-06 21:51:20'),
-(9, 1, 'February', 2, 2025, 3388.00, 1075.00, '[]', '', '2026-03-05 15:30:46', '2026-03-06 21:51:20'),
-(11, 1, 'May', 5, 2025, 3200.00, 1125.00, '[]', '', '2026-03-05 15:33:02', '2026-03-06 21:51:20'),
-(12, 1, 'June', 6, 2025, 4496.00, 375.00, '[]', '', '2026-03-05 15:34:17', '2026-03-06 21:51:20'),
-(13, 1, 'July', 7, 2025, 3751.00, 1428.75, '[]', '', '2026-03-05 15:35:16', '2026-03-06 21:51:20'),
-(14, 1, 'August', 8, 2025, 3630.00, 1161.50, '[]', '', '2026-03-05 15:36:37', '2026-03-06 21:51:20'),
-(15, 1, 'September', 9, 2025, 4114.00, 1275.00, '[]', '', '2026-03-05 15:37:43', '2026-03-06 21:51:20'),
-(16, 1, 'October', 10, 2025, 4598.00, 1325.00, '[]', '', '2026-03-05 15:38:32', '2026-03-06 21:51:20'),
-(17, 1, 'November', 11, 2025, 4477.00, 1271.00, '[]', '', '2026-03-05 15:39:37', '2026-03-06 21:51:20'),
-(18, 1, 'December', 12, 2025, 4719.00, 1327.00, '[]', '', '2026-03-05 15:41:01', '2026-03-06 21:51:20');
 
 --
 -- Déclencheurs `cashflow_entries`
@@ -124,13 +97,6 @@ CREATE TABLE `checkout_sessions` (
   `status` varchar(20) DEFAULT 'pending',
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table `checkout_sessions`
---
-
-INSERT INTO `checkout_sessions` (`id`, `user_id`, `plan`, `success_url`, `cancel_url`, `external_id`, `status`, `created_at`) VALUES
-(1, 4, 'pro', 'http://localhost:5173/CashflowDashboard', 'http://localhost:5173/Subscribe', 'cs_test_a1dZ6YBpweKhrYfV9KmsQsaZicHW9cygf5IdO81AhOllGgxlcUymOBvcVe', 'pending', '2026-03-01 21:27:45');
 
 -- --------------------------------------------------------
 
@@ -188,104 +154,6 @@ END$$
 DELIMITER ;
 
 --
--- Déchargement des données de la table `expense_categories`
---
-
-INSERT INTO `expense_categories` (`id`, `user_id`, `name`, `description`, `is_active`, `flow_type`, `type_name`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Sales', NULL, 1, 'Cash In', 'Revenu (Hors Taxe)', '2026-02-22 10:18:44', '2026-02-22 10:18:44'),
-(2, 1, 'Consulting', NULL, 1, 'Cash In', 'Revenu (Hors Taxe)', '2026-02-22 10:18:44', '2026-02-22 10:18:44'),
-(3, 1, 'Revenu', NULL, 1, 'Cash In', 'Revenu (Hors Taxe)', '2026-02-22 10:18:44', '2026-02-22 10:18:44'),
-(4, 1, 'Administration et bureau', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-22 10:18:44', '2026-02-22 10:18:44'),
-(5, 1, 'Charges (électricité, gaz, eau)', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-22 10:18:44', '2026-02-22 10:18:44'),
-(6, 1, 'Déplacements et frais', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-22 10:18:44', '2026-02-22 10:18:44'),
-(7, 1, 'Dons', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-22 10:18:44', '2026-02-22 10:18:44'),
-(8, 1, 'Formation et conférences', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-22 10:18:44', '2026-02-22 10:18:44'),
-(9, 1, 'IT', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-22 10:18:44', '2026-02-22 10:18:44'),
-(10, 1, 'Loyer', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-22 10:18:44', '2026-02-22 10:18:44'),
-(11, 1, 'Marketing', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-22 10:18:44', '2026-02-22 10:18:44'),
-(12, 1, 'Marchandises', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-22 10:18:44', '2026-02-22 10:18:44'),
-(13, 1, 'Consommables', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-22 10:18:44', '2026-02-22 10:18:44'),
-(14, 1, 'Mobilier et matériel', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-22 10:18:44', '2026-02-22 10:18:44'),
-(15, 1, 'Téléphone et Internet', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-22 10:18:44', '2026-02-22 10:18:44'),
-(16, 1, 'Autres dépenses', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-22 10:18:44', '2026-02-22 10:18:44'),
-(17, 1, 'Frais bancaires', NULL, 1, 'Cash Out', 'Frais bancaires', '2026-02-22 10:18:44', '2026-02-22 10:18:44'),
-(18, 1, 'Cotisations sociales', NULL, 1, 'Cash Out', 'Cotisations sociales', '2026-02-22 10:18:44', '2026-03-01 22:14:25'),
-(19, 1, 'Investissement', NULL, 1, 'Adjustment', 'Investissement', '2026-02-22 10:18:44', '2026-02-22 10:18:44'),
-(20, 1, 'Cas de force majeure', NULL, 1, 'Adjustment', 'Cas de force majeure', '2026-02-22 10:18:44', '2026-02-22 10:18:44'),
-(21, 1, 'Top up RUN', NULL, 1, 'Adjustment', 'Top up RUN', '2026-02-22 10:18:44', '2026-03-06 15:49:18'),
-(22, 1, 'Top up GROW', NULL, 1, 'Adjustment', 'Top up GROW', '2026-02-22 10:18:44', '2026-03-06 15:49:26'),
-(23, 1, 'Décompte TVA', NULL, 1, 'Adjustment', 'Décompte TVA', '2026-02-22 10:18:44', '2026-03-06 15:49:34'),
-(26, 2, 'Revenu', NULL, 1, 'Cash In', 'Revenu (Hors Taxe)', '2026-02-22 10:20:03', '2026-02-22 10:20:03'),
-(27, 2, 'Administration et bureau', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-22 10:20:03', '2026-02-22 10:20:03'),
-(28, 2, 'Charges (électricité, gaz, eau)', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-22 10:20:03', '2026-02-22 10:20:03'),
-(29, 2, 'Déplacements et frais', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-22 10:20:03', '2026-02-22 10:20:03'),
-(30, 2, 'Dons', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-22 10:20:03', '2026-02-22 10:20:03'),
-(31, 2, 'Formation et conférences', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-22 10:20:03', '2026-02-22 10:20:03'),
-(32, 2, 'IT', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-22 10:20:03', '2026-02-22 10:20:03'),
-(33, 2, 'Loyer', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-22 10:20:03', '2026-02-22 10:20:03'),
-(34, 2, 'Marketing', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-22 10:20:03', '2026-02-22 10:20:03'),
-(35, 2, 'Marchandises', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-22 10:20:03', '2026-02-22 10:20:03'),
-(36, 2, 'Consommables', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-22 10:20:03', '2026-02-22 10:20:03'),
-(37, 2, 'Mobilier et matériel', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-22 10:20:03', '2026-02-22 10:20:03'),
-(38, 2, 'Téléphone et Internet', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-22 10:20:03', '2026-02-22 10:20:03'),
-(39, 2, 'Autres dépenses', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-22 10:20:03', '2026-02-22 10:20:03'),
-(40, 2, 'Frais bancaires', NULL, 1, 'Cash Out', 'Frais bancaires', '2026-02-22 10:20:03', '2026-02-22 10:20:03'),
-(41, 2, 'Cotisations sociales', NULL, 1, 'Cash Out', 'Cotisations', '2026-02-22 10:20:03', '2026-02-22 10:20:03'),
-(42, 2, 'Investissement', NULL, 1, 'Adjustment', 'Investissement', '2026-02-22 10:20:03', '2026-02-22 10:20:03'),
-(43, 2, 'Cas de force majeure', NULL, 1, 'Adjustment', 'Cas de force majeure', '2026-02-22 10:20:03', '2026-02-22 10:20:03'),
-(44, 2, 'Top up RUN', NULL, 1, 'Adjustment', 'Dépenses', '2026-02-22 10:20:03', '2026-02-22 10:20:03'),
-(45, 2, 'Top up GROW', NULL, 1, 'Adjustment', 'Dépenses', '2026-02-22 10:20:03', '2026-02-22 10:20:03'),
-(46, 2, 'Décompte TVA', NULL, 1, 'Adjustment', 'Dépenses', '2026-02-22 10:20:03', '2026-02-22 10:20:03'),
-(47, 3, 'Sales', NULL, 1, 'Cash In', 'Revenu (Hors Taxe)', '2026-02-26 22:40:39', '2026-02-26 22:40:39'),
-(48, 3, 'Consulting', NULL, 1, 'Cash In', 'Revenu (Hors Taxe)', '2026-02-26 22:40:39', '2026-02-26 22:40:39'),
-(49, 3, 'Revenu', NULL, 1, 'Cash In', 'Revenu (Hors Taxe)', '2026-02-26 22:40:39', '2026-02-26 22:40:39'),
-(50, 3, 'Administration et bureau', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-26 22:40:39', '2026-02-26 22:40:39'),
-(51, 3, 'Charges (électricité, gaz, eau)', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-26 22:40:39', '2026-02-26 22:40:39'),
-(52, 3, 'Déplacements et frais', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-26 22:40:39', '2026-02-26 22:40:39'),
-(53, 3, 'Dons', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-26 22:40:39', '2026-02-26 22:40:39'),
-(54, 3, 'Formation et conférences', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-26 22:40:39', '2026-02-26 22:40:39'),
-(55, 3, 'IT', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-26 22:40:39', '2026-02-26 22:40:39'),
-(56, 3, 'Loyer', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-26 22:40:39', '2026-02-26 22:40:39'),
-(57, 3, 'Marketing', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-26 22:40:39', '2026-02-26 22:40:39'),
-(58, 3, 'Marchandises', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-26 22:40:39', '2026-02-26 22:40:39'),
-(59, 3, 'Consommables', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-26 22:40:39', '2026-02-26 22:40:39'),
-(60, 3, 'Mobilier et matériel', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-26 22:40:39', '2026-02-26 22:40:39'),
-(61, 3, 'Téléphone et Internet', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-26 22:40:39', '2026-02-26 22:40:39'),
-(62, 3, 'Autres dépenses', NULL, 1, 'Cash Out', 'Dépenses', '2026-02-26 22:40:39', '2026-02-26 22:40:39'),
-(63, 3, 'Frais bancaires', NULL, 1, 'Cash Out', 'Frais bancaires', '2026-02-26 22:40:39', '2026-02-26 22:40:39'),
-(64, 3, 'Cotisations sociales', NULL, 1, 'Cash Out', 'Cotisations', '2026-02-26 22:40:39', '2026-02-26 22:40:39'),
-(65, 3, 'Investissement', NULL, 1, 'Adjustment', 'Investissement', '2026-02-26 22:40:39', '2026-02-26 22:40:39'),
-(66, 3, 'Cas de force majeure', NULL, 1, 'Adjustment', 'Cas de force majeure', '2026-02-26 22:40:39', '2026-02-26 22:40:39'),
-(67, 3, 'Top up RUN', NULL, 1, 'Adjustment', 'Dépenses', '2026-02-26 22:40:39', '2026-02-26 22:40:39'),
-(68, 3, 'Top up GROW', NULL, 1, 'Adjustment', 'Dépenses', '2026-02-26 22:40:39', '2026-02-26 22:40:39'),
-(69, 3, 'Décompte TVA', NULL, 1, 'Adjustment', 'Dépenses', '2026-02-26 22:40:39', '2026-02-26 22:40:39'),
-(70, 4, 'Sales', NULL, 1, 'Cash In', 'Revenu (Hors Taxe)', '2026-03-01 20:52:46', '2026-03-01 20:52:46'),
-(71, 4, 'Consulting', NULL, 1, 'Cash In', 'Revenu (Hors Taxe)', '2026-03-01 20:52:46', '2026-03-01 20:52:46'),
-(72, 4, 'Revenu', NULL, 1, 'Cash In', 'Revenu (Hors Taxe)', '2026-03-01 20:52:46', '2026-03-01 20:52:46'),
-(73, 4, 'Administration et bureau', NULL, 1, 'Cash Out', 'Dépenses', '2026-03-01 20:52:46', '2026-03-01 20:52:46'),
-(74, 4, 'Charges (électricité, gaz, eau)', NULL, 1, 'Cash Out', 'Dépenses', '2026-03-01 20:52:46', '2026-03-01 20:52:46'),
-(75, 4, 'Déplacements et frais', NULL, 1, 'Cash Out', 'Dépenses', '2026-03-01 20:52:46', '2026-03-01 20:52:46'),
-(76, 4, 'Dons', NULL, 1, 'Cash Out', 'Dépenses', '2026-03-01 20:52:46', '2026-03-01 20:52:46'),
-(77, 4, 'Formation et conférences', NULL, 1, 'Cash Out', 'Dépenses', '2026-03-01 20:52:46', '2026-03-01 20:52:46'),
-(78, 4, 'IT', NULL, 1, 'Cash Out', 'Dépenses', '2026-03-01 20:52:46', '2026-03-01 20:52:46'),
-(79, 4, 'Loyer', NULL, 1, 'Cash Out', 'Dépenses', '2026-03-01 20:52:46', '2026-03-01 20:52:46'),
-(80, 4, 'Marketing', NULL, 1, 'Cash Out', 'Dépenses', '2026-03-01 20:52:46', '2026-03-01 20:52:46'),
-(81, 4, 'Marchandises', NULL, 1, 'Cash Out', 'Dépenses', '2026-03-01 20:52:46', '2026-03-01 20:52:46'),
-(82, 4, 'Consommables', NULL, 1, 'Cash Out', 'Dépenses', '2026-03-01 20:52:46', '2026-03-01 20:52:46'),
-(83, 4, 'Mobilier et matériel', NULL, 1, 'Cash Out', 'Dépenses', '2026-03-01 20:52:46', '2026-03-01 20:52:46'),
-(84, 4, 'Téléphone et Internet', NULL, 1, 'Cash Out', 'Dépenses', '2026-03-01 20:52:46', '2026-03-01 20:52:46'),
-(85, 4, 'Autres dépenses', NULL, 1, 'Cash Out', 'Dépenses', '2026-03-01 20:52:46', '2026-03-01 20:52:46'),
-(86, 4, 'Frais bancaires', NULL, 1, 'Cash Out', 'Frais bancaires', '2026-03-01 20:52:46', '2026-03-01 20:52:46'),
-(87, 4, 'Cotisations sociales', NULL, 1, 'Cash Out', 'Cotisations', '2026-03-01 20:52:46', '2026-03-01 20:52:46'),
-(88, 4, 'Investissement', NULL, 1, 'Adjustment', 'Investissement', '2026-03-01 20:52:46', '2026-03-01 20:52:46'),
-(89, 4, 'Cas de force majeure', NULL, 1, 'Adjustment', 'Cas de force majeure', '2026-03-01 20:52:46', '2026-03-01 20:52:46'),
-(90, 4, 'Top up RUN', NULL, 1, 'Adjustment', 'Dépenses', '2026-03-01 20:52:46', '2026-03-01 20:52:46'),
-(91, 4, 'Top up GROW', NULL, 1, 'Adjustment', 'Dépenses', '2026-03-01 20:52:46', '2026-03-01 20:52:46'),
-(92, 4, 'Décompte TVA', NULL, 1, 'Adjustment', 'Dépenses', '2026-03-01 20:52:46', '2026-03-01 20:52:46'),
-(93, 1, 'Subsides', '', 1, 'Cash In', 'Subsides', '2026-03-06 16:43:11', '2026-03-06 16:43:11'),
-(94, 1, 'Frais facturables', '', 1, 'Cash Out', 'Frais facturables', '2026-03-06 21:06:36', '2026-03-06 21:06:36');
-
---
 -- Déclencheurs `expense_categories`
 --
 DELIMITER $$
@@ -311,13 +179,6 @@ CREATE TABLE `reviewed_notifications` (
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Déchargement des données de la table `reviewed_notifications`
---
-
-INSERT INTO `reviewed_notifications` (`id`, `user_id`, `year`, `notification_type`, `month`, `reviewed_at`, `created_at`) VALUES
-(1, 2, 2026, 'vat_reminder', 'January', '2026-02-22 10:20:04', '2026-02-22 10:20:04');
-
 -- --------------------------------------------------------
 
 --
@@ -336,15 +197,6 @@ CREATE TABLE `subscriptions` (
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table `subscriptions`
---
-
-INSERT INTO `subscriptions` (`id`, `user_id`, `user_email`, `plan`, `status`, `current_period_end`, `grace_period_end`, `external_id`, `created_at`, `updated_at`) VALUES
-(1, 1, 'test@cashflow.local', 'standard', 'active', NULL, NULL, NULL, '2026-02-27 02:17:54', '2026-02-27 02:17:54'),
-(2, 2, 'autotest@cashflow.local', 'standard', 'active', NULL, NULL, NULL, '2026-02-27 02:17:54', '2026-02-27 02:17:54');
-
 -- --------------------------------------------------------
 
 --
@@ -369,61 +221,6 @@ CREATE TABLE `transactions` (
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table `transactions`
---
-
-INSERT INTO `transactions` (`id`, `user_id`, `month`, `month_number`, `year`, `type`, `flow_type`, `category`, `description`, `amount_excl_vat`, `vat_rate`, `vat_status`, `created_at`, `updated_at`) VALUES
-(2, 2, 'February', 2, 2026, 'Revenu (Hors Taxe)', 'Cash In', 'Sales', NULL, 500.00, 21.00, 'not applicable', '2026-02-22 10:20:04', '2026-03-06 21:51:20'),
-(3, 2, 'March', 3, 2026, 'Dépenses', 'Cash Out', 'IT', NULL, 200.00, 21.00, 'not applicable', '2026-02-22 10:20:04', '2026-03-06 21:51:20'),
-(4, 1, 'January', 1, 2026, 'Subsides', 'Cash In', 'Subsides', 'Subside de test', 4000.00, 0.00, 'not applicable', '2026-02-22 10:33:53', '2026-03-06 21:51:20'),
-(5, 1, 'January', 1, 2026, 'Dépenses', 'Cash Out', 'IT', 'Pc pour le developer', 3099.00, 0.00, 'not applicable', '2026-02-22 10:56:24', '2026-03-06 21:51:20'),
-(6, 1, 'January', 1, 2026, 'Dépenses', 'Cash Out', 'Loyer', 'Loyer', 700.00, 0.00, 'not applicable', '2026-02-26 11:23:06', '2026-03-06 21:51:20'),
-(7, 1, 'February', 2, 2026, 'Revenu (Hors Taxe)', 'Cash In', 'Sales', 'Vents de voiture', 7000.00, 21.00, 'payable', '2026-02-27 08:57:53', '2026-03-06 21:51:20'),
-(8, 1, 'January', 1, 2026, 'Cotisations sociales', 'Cash Out', 'Cotisations sociales', '', 2000.00, 0.00, 'not applicable', '2026-02-27 08:58:36', '2026-03-06 21:51:20'),
-(9, 4, 'February', 2, 2025, 'Cotisations sociales', 'Cash Out', 'Cotisations sociales', '', 200.00, 0.00, 'not applicable', '2026-03-01 21:31:46', '2026-03-06 21:51:20'),
-(10, 4, 'February', 2, 2025, 'Revenu (Hors Taxe)', 'Cash In', 'Consulting', '', 1000.00, 21.00, 'payable', '2026-03-01 21:33:31', '2026-03-06 21:51:20'),
-(11, 1, 'January', 1, 2026, 'Cotisations sociales', 'Cash Out', 'Cotisations sociales', '', 200.00, 0.00, 'not applicable', '2026-03-01 21:37:03', '2026-03-06 21:51:20'),
-(12, 1, 'March', 3, 2025, 'Cotisations sociales', 'Cash Out', 'Cotisations sociales', 'Test', 3000.11, 0.00, 'not applicable', '2026-03-01 22:19:06', '2026-03-06 21:51:20'),
-(13, 1, 'February', 2, 2026, 'Cas de force majeure', 'Adjustment', 'Cas de force majeure', '', 100.00, 21.00, 'to be reclaimed', '2026-03-01 22:25:27', '2026-03-06 21:51:20'),
-(14, 1, 'February', 2, 2026, 'Investissement', 'Adjustment', 'Investissement', 'test', 300.00, 21.00, 'to be reclaimed', '2026-03-01 23:49:28', '2026-03-06 21:51:20'),
-(15, 1, 'April', 4, 2025, 'Dépenses', 'Cash Out', 'Déplacements et frais', '', 1000.00, 12.00, 'to be reclaimed', '2026-03-05 15:23:39', '2026-03-06 21:51:20'),
-(16, 1, 'April', 4, 2025, 'Cotisations sociales', 'Cash Out', 'Cotisations sociales', '', 50.00, 0.00, 'not applicable', '2026-03-05 15:23:55', '2026-03-06 21:51:20'),
-(17, 1, 'January', 1, 2025, 'Revenu (Hors Taxe)', 'Cash In', 'Consulting', '', 1000.00, 0.00, 'not applicable', '2026-03-05 15:25:00', '2026-03-06 21:51:20'),
-(18, 1, 'January', 1, 2025, 'Dépenses', 'Cash Out', 'IT', '', 800.00, 6.00, 'to be reclaimed', '2026-03-05 15:25:59', '2026-03-06 21:51:20'),
-(19, 1, 'February', 2, 2025, 'Revenu (Hors Taxe)', 'Cash In', 'Sales', '', 2800.00, 21.00, 'payable', '2026-03-05 15:28:53', '2026-03-06 21:51:20'),
-(20, 1, 'February', 2, 2025, 'Dépenses', 'Cash Out', 'Loyer', '', 700.00, 0.00, 'not applicable', '2026-03-05 15:29:32', '2026-03-06 21:51:20'),
-(22, 1, 'March', 3, 2025, 'Revenu (Hors Taxe)', 'Cash In', 'Sales', '', 3600.00, 21.00, 'payable', '2026-03-05 15:30:42', '2026-03-06 21:51:20'),
-(23, 1, 'March', 3, 2025, 'Dépenses', 'Cash Out', 'IT', '', 2050.00, 9.00, 'to be reclaimed', '2026-03-05 15:32:23', '2026-03-06 21:51:20'),
-(24, 1, 'May', 5, 2025, 'Revenu (Hors Taxe)', 'Cash In', 'Sales', '', 3200.00, 0.00, 'not applicable', '2026-03-05 15:33:02', '2026-03-06 21:51:20'),
-(25, 1, 'May', 5, 2025, 'Dépenses', 'Cash Out', 'Loyer', '', 750.00, 0.00, 'not applicable', '2026-03-05 15:33:53', '2026-03-06 21:51:20'),
-(26, 1, 'June', 6, 2025, 'Revenu (Hors Taxe)', 'Cash In', 'Consulting', '', 3600.00, 0.00, 'not applicable', '2026-03-05 15:34:17', '2026-03-06 21:51:20'),
-(27, 1, 'June', 6, 2025, 'Revenu (Hors Taxe)', 'Cash In', 'Consulting', '', 800.00, 12.00, 'payable', '2026-03-05 15:34:43', '2026-03-06 21:51:20'),
-(28, 1, 'July', 7, 2025, 'Revenu (Hors Taxe)', 'Cash In', 'Revenu', '', 3100.00, 21.00, 'payable', '2026-03-05 15:35:16', '2026-03-06 21:51:20'),
-(29, 1, 'July', 7, 2025, 'Dépenses', 'Cash Out', 'Déplacements et frais', '', 700.00, 50.00, 'to be reclaimed', '2026-03-05 15:35:57', '2026-03-06 21:51:20'),
-(30, 1, 'August', 8, 2025, 'Revenu (Hors Taxe)', 'Cash In', 'Sales', '', 3000.00, 21.00, 'payable', '2026-03-05 15:36:37', '2026-03-06 21:51:20'),
-(31, 1, 'August', 8, 2025, 'Dépenses', 'Cash Out', 'Marketing', '', 650.00, 21.00, 'to be reclaimed', '2026-03-05 15:37:20', '2026-03-06 21:51:20'),
-(32, 1, 'September', 9, 2025, 'Revenu (Hors Taxe)', 'Cash In', 'Consulting', '', 3400.00, 21.00, 'payable', '2026-03-05 15:37:43', '2026-03-06 21:51:20'),
-(33, 1, 'September', 9, 2025, 'Dépenses', 'Cash Out', 'Dons', '', 900.00, 0.00, 'not applicable', '2026-03-05 15:38:05', '2026-03-06 21:51:20'),
-(34, 1, 'October', 10, 2025, 'Revenu (Hors Taxe)', 'Cash In', 'Revenu', '', 3800.00, 21.00, 'payable', '2026-03-05 15:38:32', '2026-03-06 21:51:20'),
-(35, 1, 'October', 10, 2025, 'Frais bancaires', 'Cash Out', 'Frais bancaires', '', 950.00, 0.00, 'not applicable', '2026-03-05 15:39:16', '2026-03-06 21:51:20'),
-(36, 1, 'November', 11, 2025, 'Revenu (Hors Taxe)', 'Cash In', 'Sales', '', 3700.00, 21.00, 'payable', '2026-03-05 15:39:37', '2026-03-06 21:51:20'),
-(37, 1, 'November', 11, 2025, 'Dépenses', 'Cash Out', 'Téléphone et Internet', '', 800.00, 12.00, 'to be reclaimed', '2026-03-05 15:40:38', '2026-03-06 21:51:20'),
-(38, 1, 'December', 12, 2025, 'Revenu (Hors Taxe)', 'Cash In', 'Sales', '', 3900.00, 21.00, 'payable', '2026-03-05 15:41:01', '2026-03-06 21:51:20'),
-(39, 1, 'December', 12, 2025, 'Dépenses', 'Cash Out', 'Consommables', '', 850.00, 12.00, 'to be reclaimed', '2026-03-05 15:41:40', '2026-03-06 21:51:20'),
-(40, 1, 'January', 1, 2025, 'Cotisations sociales', 'Cash Out', 'Cotisations sociales', '', 375.00, 0.00, 'not applicable', '2026-03-05 15:48:42', '2026-03-06 21:51:20'),
-(41, 1, 'February', 2, 2025, 'Cotisations sociales', 'Cash Out', 'Cotisations sociales', '', 375.00, 0.00, 'not applicable', '2026-03-05 15:49:19', '2026-03-06 21:51:20'),
-(43, 1, 'April', 4, 2025, 'Cotisations sociales', 'Cash Out', 'Cotisations sociales', '', 375.00, 0.00, 'not applicable', '2026-03-05 15:49:42', '2026-03-06 21:51:20'),
-(44, 1, 'May', 5, 2025, 'Cotisations sociales', 'Cash Out', 'Cotisations sociales', '', 375.00, 0.00, 'not applicable', '2026-03-05 15:49:55', '2026-03-06 21:51:20'),
-(45, 1, 'June', 6, 2025, 'Cotisations sociales', 'Cash Out', 'Cotisations sociales', '', 375.00, 0.00, 'not applicable', '2026-03-05 15:50:09', '2026-03-06 21:51:20'),
-(46, 1, 'July', 7, 2025, 'Dépenses', 'Cash Out', 'IT', '', 375.00, 1.00, 'to be reclaimed', '2026-03-05 15:50:22', '2026-03-06 21:51:20'),
-(47, 1, 'August', 8, 2025, 'Cotisations sociales', 'Cash Out', 'Cotisations sociales', '', 375.00, 0.00, 'not applicable', '2026-03-05 15:50:34', '2026-03-06 21:51:20'),
-(48, 1, 'September', 9, 2025, 'Cotisations sociales', 'Cash Out', 'Cotisations sociales', '', 375.00, 0.00, 'not applicable', '2026-03-05 15:50:49', '2026-03-06 21:51:20'),
-(49, 1, 'October', 10, 2025, 'Cotisations sociales', 'Cash Out', 'Cotisations sociales', '', 375.00, 0.00, 'not applicable', '2026-03-05 15:51:04', '2026-03-06 21:51:20'),
-(50, 1, 'November', 11, 2025, 'Cotisations sociales', 'Cash Out', 'Cotisations sociales', '', 375.00, 0.00, 'not applicable', '2026-03-05 15:51:18', '2026-03-06 21:51:20'),
-(51, 1, 'December', 12, 2025, 'Cotisations sociales', 'Cash Out', 'Cotisations sociales', '', 375.00, 0.00, 'not applicable', '2026-03-05 15:51:42', '2026-03-06 21:51:20');
-
 --
 -- Déclencheurs `transactions`
 --
@@ -587,16 +384,6 @@ CREATE TABLE `treasury_rules` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Déchargement des données de la table `treasury_rules`
---
-
-INSERT INTO `treasury_rules` (`id`, `user_id`, `run_percentage`, `pay_percentage`, `grow_percentage`, `pay_cap`, `currency`, `created_at`, `updated_at`) VALUES
-(1, 1, 50.00, 20.00, 30.00, NULL, 'EUR', '2026-02-22 10:18:44', '2026-02-22 10:18:44'),
-(2, 2, 50.00, 20.00, 30.00, NULL, 'EUR', '2026-02-22 10:20:03', '2026-02-22 10:20:03'),
-(3, 3, 50.00, 20.00, 30.00, NULL, 'EUR', '2026-02-26 22:40:39', '2026-02-26 22:40:39'),
-(4, 4, 50.00, 20.00, 30.00, NULL, 'EUR', '2026-03-01 20:52:46', '2026-03-01 21:32:32');
-
---
 -- Déclencheurs `treasury_rules`
 --
 DELIMITER $$
@@ -627,15 +414,6 @@ CREATE TABLE `treasury_settings` (
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Déchargement des données de la table `treasury_settings`
---
-
-INSERT INTO `treasury_settings` (`id`, `user_id`, `vat_exemption_scheme`, `run_percentage`, `pay_percentage`, `pay_cap`, `grow_percentage`, `invest_enabled`, `invest_min_months_positive`, `currency`, `created_at`, `updated_at`) VALUES
-(1, 1, 0, 50.00, 20.00, 0.00, 30.00, 1, 3, 'EUR', '2026-02-22 10:18:44', '2026-03-05 15:45:44'),
-(2, 2, 0, 55.00, 25.00, 0.00, 20.00, 1, 3, 'EUR', '2026-02-22 10:20:03', '2026-02-22 10:20:03'),
-(3, 3, 0, 50.00, 20.00, 0.00, 30.00, 1, 3, 'EUR', '2026-02-26 22:40:39', '2026-02-26 22:40:39'),
-(4, 4, 0, 50.00, 20.00, 0.00, 30.00, 1, 5, 'EUR', '2026-03-01 20:52:46', '2026-03-01 21:32:32');
 
 --
 -- Déclencheurs `treasury_settings`
@@ -658,7 +436,10 @@ CREATE TABLE `users` (
   `email` varchar(255) NOT NULL,
   `password_hash` varchar(255) NOT NULL,
   `full_name` varchar(255) DEFAULT NULL,
+  `first_name` varchar(255) DEFAULT NULL,
+  `last_name` varchar(255) DEFAULT NULL,
   `company_name` varchar(255) DEFAULT NULL,
+  `is_admin` tinyint(1) NOT NULL DEFAULT 0,
   `company_street` varchar(255) DEFAULT NULL,
   `company_zipcode` varchar(20) DEFAULT NULL,
   `company_city` varchar(100) DEFAULT NULL,
@@ -672,22 +453,14 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Déchargement des données de la table `users`
---
-
-INSERT INTO `users` (`id`, `email`, `password_hash`, `full_name`, `company_name`, `company_street`, `company_zipcode`, `company_city`, `company_vat_number`, `company_phone`, `company_phone_prefix`, `company_currency`, `company_country`, `created_at`, `updated_at`) VALUES
-(1, 'test@cashflow.local', '$2a$12$b7A76BGwvrtFk/Gf7oFppuXxanpsELl8gnijLGUCUnzSvsUliB9W6', 'Test User', NULL, NULL, NULL, NULL, NULL, NULL, '+32', 'EUR', 'Belgium', '2026-02-22 10:18:44', '2026-02-22 10:18:44'),
-(2, 'autotest@cashflow.local', '$2a$12$4ckEXTal4Qlo3EPtiL7vIO51GJt2G6msLpsLRdvHIwg8WSpxzU59a', 'Auto Test', 'Test Corp', NULL, NULL, NULL, NULL, NULL, '+32', 'EUR', 'Belgium', '2026-02-22 10:20:03', '2026-02-22 10:20:03'),
-(3, 'logintest_1772142038595@test.local', '$2a$12$jCIMeH0K39959bl7BGL7/uaUd0Yl37NQKt0FSCI9GjdooAWot/BdG', 'Login Tester', 'Test Corp', NULL, NULL, 'Brussels', NULL, NULL, '+32', 'EUR', 'Belgium', '2026-02-26 22:40:39', '2026-02-26 22:40:40'),
-(4, 'berton.lutina@hotmail.com', '$2a$12$KitKV7UI0bgwuPkRZ/y8OOSVv2yP2jqEQiF4sEf23mI3Yc.LCT.Py', 'Berton Lutina Mulamba', NULL, NULL, NULL, NULL, NULL, NULL, '+32', 'EUR', 'Belgium', '2026-03-01 20:52:46', '2026-03-01 20:52:46');
-
---
 -- Déclencheurs `users`
 --
 DELIMITER $$
 CREATE TRIGGER `trg_after_user_insert` AFTER INSERT ON `users` FOR EACH ROW BEGIN
-  INSERT IGNORE INTO treasury_rules (user_id) VALUES (NEW.id);
-  INSERT IGNORE INTO treasury_settings (user_id) VALUES (NEW.id);
+  INSERT INTO `treasury_rules` (`user_id`, `run_percentage`, `pay_percentage`, `grow_percentage`, `pay_cap`, `currency`, `created_at`, `updated_at`) VALUES
+(NEW.id, 50.00, 20.00, 30.00, NULL, 'EUR', NOW(),NOW());
+  INSERT IGNORE INTO `treasury_settings` (`user_id`, `vat_exemption_scheme`, `run_percentage`, `pay_percentage`, `pay_cap`, `grow_percentage`, `invest_enabled`, `invest_min_months_positive`, `currency`, `created_at`, `updated_at`) VALUES
+(NEW.id, 0, 50.00, 20.00, 0.00, 30.00, 1, 3, 'EUR', NOW(),NOW());
 END
 $$
 DELIMITER ;
